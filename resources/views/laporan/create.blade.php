@@ -3,315 +3,322 @@
 @section('title', 'Buat Laporan Baru - E-Ticketing System')
 
 @section('content')
-    <div class="min-h-screen bg-gradient-to-br from-[#001D39] to-[#002B4F] py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Header dengan Logo dan Credit - Paling Ujung -->
-        <div class="max-w-5xl mx-auto mb-6">
-            <div class="flex items-center justify-between">
-                <!-- Logo di Ujung Kiri -->
-                <div class="flex items-center group">
-                    <img src="{{ asset('assets/logo1.PNG') }}" alt="Logo E-Ticketing"
-                        class="h-13 w-auto brightness-0 invert drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-500"
-                        onerror="this.style.display='none'">
-                </div>
+    <div class="min-h-screen bg-[#001D39]">
+        <!-- Konten halaman dengan scrollbar custom - full page tanpa sidebar -->
+        <div class="overflow-y-auto" style="height: 100vh;">
+            <!-- Header dengan Logo dan Credit - Fully Responsive -->
+            <div class="max-w-5xl mx-auto pt-4 sm:pt-6 md:pt-8 px-3 sm:px-4 md:px-6 lg:px-8 mb-4 sm:mb-6">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
+                    <!-- Logo di Ujung Kiri (Mobile: tengah, Desktop: kiri) -->
+                    <div class="flex items-center group">
+                        <img src="{{ asset('assets/logo1.PNG') }}" alt="Logo E-Ticketing"
+                            class="h-8 sm:h-10 md:h-12 lg:h-13 w-auto brightness-0 invert drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.style.display='none'">
+                    </div>
 
-                <!-- Credit di Ujung Kanan -->
-                <div class="flex items-center space-x-2">
-                    <span class="text-white font-medium">DEVELOP BY</span>
-                    <span
-                        class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-bold text-lg">
-                        IT DIGITAL
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Header lebih ringkas -->
-        <div class="max-w-5xl mx-auto mb-6">
-            <div class="flex items-center justify-center">
-                <div>
-                    <h1 class="text-3xl font-bold text-white text-center">
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-400">
-                            Buat Laporan Baru
+                    <!-- Credit di Ujung Kanan (Mobile: tengah, Desktop: kanan) -->
+                    <div class="flex items-center justify-center space-x-1.5 sm:space-x-2">
+                        <span class="text-white font-medium text-xs sm:text-sm md:text-base">DEVELOP BY</span>
+                        <span
+                            class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-bold text-sm sm:text-base md:text-lg">
+                            IT DIGITAL
                         </span>
-                    </h1>
-                    <p class="text-gray-300 text-sm mt-1">Isi form berikut untuk membuat laporan tiket baru</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form Card dengan layout grid yang lebih efisien -->
-        <div class="max-w-5xl mx-auto">
-            <!-- Info Card ringkas -->
-            <div class="mb-4 bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
-                <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p class="text-xs text-blue-200">Setiap laporan akan mendapatkan nomor tiket unik untuk tracking status
-                        laporan Anda.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Form dengan glassmorphism -->
-            <div class="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-2xl p-5">
-                <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data" id="laporanForm">
-                    @csrf
-
-                    <!-- Grid 2 kolom untuk input yang lebih rapat -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Nama Pelapor -->
-                        <div>
-                            <label for="nama_pelapor" class="block text-xs font-medium text-gray-300 mb-1">
-                                Nama Pelapor <span class="text-red-400">*</span>
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                    </svg>
-                                </div>
-                                <input type="text" id="nama_pelapor" name="nama_pelapor"
-                                    value="{{ old('nama_pelapor') }}"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('nama_pelapor') border-red-400 @enderror"
-                                    placeholder="Nama lengkap" required>
-                            </div>
-                            @error('nama_pelapor')
-                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- No Handphone -->
-                        <div>
-                            <label for="no_handphone" class="block text-xs font-medium text-gray-300 mb-1">
-                                No. Handphone <span class="text-red-400">*</span>
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <input type="tel" id="no_handphone" name="no_handphone"
-                                    value="{{ old('no_handphone') }}"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('no_handphone') border-red-400 @enderror"
-                                    placeholder="08xxxxxxxxxx" required pattern="[0-9]{10,13}">
-                            </div>
-                            @error('no_handphone')
-                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Kantor -->
-                        <div>
-                            <label for="kantor_id" class="block text-xs font-medium text-gray-300 mb-1">
-                                Kantor <span class="text-red-400">*</span>
-                            </label>
-                            <div class="relative">
-                                <select id="kantor_id" name="kantor_id"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('kantor_id') border-red-400 @enderror"
-                                    required>
-                                    <option value="" class="bg-[#001D39] text-gray-400">Pilih Kantor</option>
-                                    @foreach ($kantors as $kantor)
-                                        <option value="{{ $kantor->id }}"
-                                            {{ old('kantor_id') == $kantor->id ? 'selected' : '' }}
-                                            class="bg-[#001D39] text-white">
-                                            {{ $kantor->kode_cabang }} - {{ $kantor->nama_cabang }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
-                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            @error('kantor_id')
-                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Status Awal -->
-                        <div>
-                            <label for="status" class="block text-xs font-medium text-gray-300 mb-1">
-                                Status Awal
-                            </label>
-                            <div class="relative">
-                                <input type="text" id="status" value="Baru" readonly disabled
-                                    class="w-full bg-white/5 border border-white/10 text-green-400 rounded-lg px-3 py-2 text-sm opacity-75 cursor-not-allowed">
-                            </div>
-                        </div>
-
-                        <!-- Jenis Aplikasi -->
-                        <div>
-                            <label for="jenis_aplikasi_id" class="block text-xs font-medium text-gray-300 mb-1">
-                                Jenis Aplikasi <span class="text-red-400">*</span>
-                            </label>
-                            <div class="relative">
-                                <select id="jenis_aplikasi_id" name="jenis_aplikasi_id"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('jenis_aplikasi_id') border-red-400 @enderror"
-                                    required>
-                                    <option value="" class="bg-[#001D39] text-gray-400">Pilih Jenis Aplikasi
-                                    </option>
-                                    @foreach ($jenisAplikasis as $jenis)
-                                        <option value="{{ $jenis->id }}"
-                                            {{ old('jenis_aplikasi_id') == $jenis->id ? 'selected' : '' }}
-                                            class="bg-[#001D39] text-white">
-                                            {{ $jenis->jenis_aplikasi }} - {{ $jenis->deskripsi }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
-                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            @error('jenis_aplikasi_id')
-                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Kode/Nama Produk -->
-                        <div>
-                            <label for="kode_produk_id" class="block text-xs font-medium text-gray-300 mb-1">
-                                Kode/Nama Produk <span class="text-red-400">*</span>
-                            </label>
-                            <div class="relative">
-                                <select id="kode_produk_id" name="kode_produk_id"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('kode_produk_id') border-red-400 @enderror"
-                                    required disabled>
-                                    <option value="" class="bg-[#001D39] text-gray-400">Pilih Jenis Aplikasi
-                                        Terlebih Dahulu</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
-                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div id="product-loading" class="hidden text-green-400 text-xs mt-1">
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10"
-                                            stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor"
-                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                        </path>
-                                    </svg>
-                                    Memuat produk...
-                                </span>
-                            </div>
-                            @error('kode_produk_id')
-                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Kronologi - Full width -->
-                    <div class="mt-4">
-                        <label for="kronologi" class="block text-xs font-medium text-gray-300 mb-1">
-                            Kronologi <span class="text-red-400">*</span>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute top-2 left-2 pointer-events-none">
-                                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h7"></path>
-                                </svg>
-                            </div>
-                            <textarea id="kronologi" name="kronologi" rows="3"
-                                class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('kronologi') border-red-400 @enderror"
-                                placeholder="Jelaskan kronologi kejadian secara detail..." required>{{ old('kronologi') }}</textarea>
-                        </div>
-                        @error('kronologi')
-                            <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Multiple Lampiran dengan preview -->
-                    <div class="mt-4">
-                        <label for="lampiran" class="block text-xs font-medium text-gray-300 mb-1">
-                            Lampiran (Multiple files allowed)
-                        </label>
-                        <div id="dropzone-area"
-                            class="relative border-2 border-dashed border-white/10 rounded-lg p-3 hover:border-green-500/50 transition-all duration-300 cursor-pointer group">
-                            <input type="file" id="lampiran" name="lampiran[]" multiple
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
-
-                            <!-- Multiple Preview Container -->
-                            <div id="preview-container" class="hidden mb-2">
-                                <div id="files-preview" class="grid grid-cols-4 md:grid-cols-6 gap-2">
-                                    <!-- Preview items akan ditambahkan di sini -->
-                                </div>
-                            </div>
-
-                            <!-- Upload Placeholder lebih ringkas -->
-                            <div id="upload-placeholder" class="flex items-center justify-center gap-3">
-                                <svg class="h-8 w-8 text-gray-400 group-hover:text-green-400 transition-colors"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                    </path>
-                                </svg>
-                                <div>
-                                    <p class="text-xs text-gray-400">
-                                        <span class="text-green-400 font-semibold">Klik untuk upload</span> atau drag and
-                                        drop
-                                    </p>
-                                    <p class="text-xs text-gray-500 mt-0.5">JPG, PNG, PDF, DOC (Max. 2MB each)</p>
-                                </div>
-                                <span id="file-count" class="text-xs text-green-400 ml-auto"></span>
-                            </div>
-                        </div>
-                        @error('lampiran.*')
-                            <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Submit Buttons lebih ringkas -->
-                    <div class="flex items-center justify-end gap-3 mt-5 pt-3 border-t border-white/10">
-                        <a href="/"
-                            class="px-4 py-2 border border-white/10 text-gray-300 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                            Batal
-                        </a>
-                        <button type="submit" id="submitBtn"
-                            class="group relative px-5 py-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span class="relative z-10 flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                Kirim Laporan
+            <!-- Header lebih ringkas -->
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+                <div class="flex items-center justify-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-white text-center">
+                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-400">
+                                Buat Laporan Baru
                             </span>
-                            <div
-                                class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000">
-                            </div>
-                        </button>
+                        </h1>
+                        <p class="text-gray-300 text-sm mt-1">Isi form berikut untuk membuat laporan tiket baru</p>
                     </div>
-                </form>
+                </div>
             </div>
 
-            <!-- Footer Info ringkas -->
-            <div class="mt-4 text-center text-xs text-gray-400">
-                <p>Dengan mengirim laporan, Anda menyetujui
-                    <a href="#" class="text-green-400 hover:text-green-300">Ketentuan Layanan</a> dan
-                    <a href="#" class="text-green-400 hover:text-green-300">Kebijakan Privasi</a> kami.
-                </p>
+            <!-- Form Card dengan layout grid yang lebih efisien -->
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+                <!-- Info Card ringkas -->
+                <div class="mb-4 bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-xs text-blue-200">Setiap laporan akan mendapatkan nomor tiket unik untuk tracking
+                            status
+                            laporan Anda.</p>
+                    </div>
+                </div>
+
+                <!-- Form dengan glassmorphism -->
+                <div class="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-2xl p-5">
+                    <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data"
+                        id="laporanForm">
+                        @csrf
+
+                        <!-- Grid 2 kolom untuk input yang lebih rapat -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Nama Pelapor -->
+                            <div>
+                                <label for="nama_pelapor" class="block text-xs font-medium text-gray-300 mb-1">
+                                    Nama Pelapor <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="nama_pelapor" name="nama_pelapor"
+                                        value="{{ old('nama_pelapor') }}"
+                                        class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('nama_pelapor') border-red-400 @enderror"
+                                        placeholder="Nama lengkap" required>
+                                </div>
+                                @error('nama_pelapor')
+                                    <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- No Handphone -->
+                            <div>
+                                <label for="no_handphone" class="block text-xs font-medium text-gray-300 mb-1">
+                                    No. Handphone <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <input type="tel" id="no_handphone" name="no_handphone"
+                                        value="{{ old('no_handphone') }}"
+                                        class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('no_handphone') border-red-400 @enderror"
+                                        placeholder="08xxxxxxxxxx" required pattern="[0-9]{10,13}">
+                                </div>
+                                @error('no_handphone')
+                                    <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Kantor -->
+                            <div>
+                                <label for="kantor_id" class="block text-xs font-medium text-gray-300 mb-1">
+                                    Kantor <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <select id="kantor_id" name="kantor_id"
+                                        class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('kantor_id') border-red-400 @enderror"
+                                        required>
+                                        <option value="" class="bg-[#001D39] text-gray-400">Pilih Kantor</option>
+                                        @foreach ($kantors as $kantor)
+                                            <option value="{{ $kantor->id }}"
+                                                {{ old('kantor_id') == $kantor->id ? 'selected' : '' }}
+                                                class="bg-[#001D39] text-white">
+                                                {{ $kantor->kode_cabang }} - {{ $kantor->nama_cabang }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                @error('kantor_id')
+                                    <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Status Awal -->
+                            <div>
+                                <label for="status" class="block text-xs font-medium text-gray-300 mb-1">
+                                    Status Awal
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="status" value="Baru" readonly disabled
+                                        class="w-full bg-white/5 border border-white/10 text-green-400 rounded-lg px-3 py-2 text-sm opacity-75 cursor-not-allowed">
+                                </div>
+                            </div>
+
+                            <!-- Jenis Aplikasi -->
+                            <div>
+                                <label for="jenis_aplikasi_id" class="block text-xs font-medium text-gray-300 mb-1">
+                                    Jenis Aplikasi <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <select id="jenis_aplikasi_id" name="jenis_aplikasi_id"
+                                        class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('jenis_aplikasi_id') border-red-400 @enderror"
+                                        required>
+                                        <option value="" class="bg-[#001D39] text-gray-400">Pilih Jenis Aplikasi
+                                        </option>
+                                        @foreach ($jenisAplikasis as $jenis)
+                                            <option value="{{ $jenis->id }}"
+                                                {{ old('jenis_aplikasi_id') == $jenis->id ? 'selected' : '' }}
+                                                class="bg-[#001D39] text-white">
+                                                {{ $jenis->jenis_aplikasi }} - {{ $jenis->deskripsi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                @error('jenis_aplikasi_id')
+                                    <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Kode/Nama Produk -->
+                            <div>
+                                <label for="kode_produk_id" class="block text-xs font-medium text-gray-300 mb-1">
+                                    Kode/Nama Produk <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <select id="kode_produk_id" name="kode_produk_id"
+                                        class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2 text-sm appearance-none focus:border-green-400 focus:outline-none transition-colors @error('kode_produk_id') border-red-400 @enderror"
+                                        required disabled>
+                                        <option value="" class="bg-[#001D39] text-gray-400">Pilih Jenis Aplikasi
+                                            Terlebih Dahulu</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div id="product-loading" class="hidden text-green-400 text-xs mt-1">
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                        Memuat produk...
+                                    </span>
+                                </div>
+                                @error('kode_produk_id')
+                                    <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Kronologi - Full width -->
+                        <div class="mt-4">
+                            <label for="kronologi" class="block text-xs font-medium text-gray-300 mb-1">
+                                Kronologi <span class="text-red-400">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute top-2 left-2 pointer-events-none">
+                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h7"></path>
+                                    </svg>
+                                </div>
+                                <textarea id="kronologi" name="kronologi" rows="3"
+                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-8 pr-3 py-2 text-sm focus:border-green-400 focus:outline-none transition-colors @error('kronologi') border-red-400 @enderror"
+                                    placeholder="Jelaskan kronologi kejadian secara detail..." required>{{ old('kronologi') }}</textarea>
+                            </div>
+                            @error('kronologi')
+                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Multiple Lampiran dengan preview -->
+                        <div class="mt-4">
+                            <label for="lampiran" class="block text-xs font-medium text-gray-300 mb-1">
+                                Lampiran (Multiple files allowed)
+                            </label>
+                            <div id="dropzone-area"
+                                class="relative border-2 border-dashed border-white/10 rounded-lg p-3 hover:border-green-500/50 transition-all duration-300 cursor-pointer group">
+                                <input type="file" id="lampiran" name="lampiran[]" multiple
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+
+                                <!-- Multiple Preview Container -->
+                                <div id="preview-container" class="hidden mb-2">
+                                    <div id="files-preview" class="grid grid-cols-4 md:grid-cols-6 gap-2">
+                                        <!-- Preview items akan ditambahkan di sini -->
+                                    </div>
+                                </div>
+
+                                <!-- Upload Placeholder lebih ringkas -->
+                                <div id="upload-placeholder" class="flex items-center justify-center gap-3">
+                                    <svg class="h-8 w-8 text-gray-400 group-hover:text-green-400 transition-colors"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                        </path>
+                                    </svg>
+                                    <div>
+                                        <p class="text-xs text-gray-400">
+                                            <span class="text-green-400 font-semibold">Klik untuk upload</span> atau drag
+                                            and
+                                            drop
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-0.5">JPG, PNG, PDF, DOC (Max. 2MB each)</p>
+                                    </div>
+                                    <span id="file-count" class="text-xs text-green-400 ml-auto"></span>
+                                </div>
+                            </div>
+                            @error('lampiran.*')
+                                <p class="text-red-400 text-xs mt-0.5">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Submit Buttons lebih ringkas -->
+                        <div class="flex items-center justify-end gap-3 mt-5 pt-3 border-t border-white/10">
+                            <a href="/"
+                                class="px-4 py-2 border border-white/10 text-gray-300 rounded-lg hover:bg-white/5 transition-colors text-sm">
+                                Batal
+                            </a>
+                            <button type="submit" id="submitBtn"
+                                class="group relative px-5 py-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span class="relative z-10 flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Kirim Laporan
+                                </span>
+                                <div
+                                    class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000">
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer Info ringkas -->
+                <div class="mt-4 text-center text-xs text-gray-400">
+                    <p>Dengan mengirim laporan, Anda menyetujui
+                        <a href="#" class="text-green-400 hover:text-green-300">Ketentuan Layanan</a> dan
+                        <a href="#" class="text-green-400 hover:text-green-300">Kebijakan Privasi</a> kami.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -484,14 +491,9 @@
 
 @push('styles')
     <style>
-        /* Hide modal by default */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Custom scrollbar lebih kecil */
+        /* Custom scrollbar untuk konten - SAMA SEPERTI HALAMAN DATA KANTOR */
         .overflow-y-auto::-webkit-scrollbar {
-            width: 3px;
+            width: 5px;
         }
 
         .overflow-y-auto::-webkit-scrollbar-track {
@@ -500,12 +502,17 @@
         }
 
         .overflow-y-auto::-webkit-scrollbar-thumb {
-            background: rgba(16, 185, 129, 0.3);
+            background: rgba(59, 130, 246, 0.3);
             border-radius: 10px;
         }
 
         .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-            background: rgba(16, 185, 129, 0.6);
+            background: rgba(59, 130, 246, 0.6);
+        }
+
+        /* Hide modal by default */
+        .hidden {
+            display: none !important;
         }
 
         /* File input styling */
@@ -662,6 +669,61 @@
         select option:hover {
             background-color: #002B4F;
         }
+
+        /* ============================================ */
+        /* RESPONSIVE UNTUK MOBILE SAJA (max-width: 768px) */
+        /* SAMA SEPERTI HALAMAN DATA KANTOR */
+        /* ============================================ */
+        @media (max-width: 768px) {
+
+            /* Konten utama - kurangi padding */
+            .max-w-5xl.mx-auto.pt-8 {
+                padding-top: 1rem !important;
+            }
+
+            .p-5 {
+                padding: 1rem !important;
+            }
+
+            /* Header - perkecil margin dan font */
+            .text-3xl {
+                font-size: 1.25rem !important;
+                line-height: 1.75rem !important;
+            }
+
+            .text-gray-300.text-sm {
+                font-size: 0.75rem !important;
+            }
+
+            /* Form grid jadi column */
+            .grid {
+                gap: 0.75rem !important;
+            }
+
+            /* Tombol */
+            .flex.items-center.justify-end {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+            }
+
+            .flex.items-center.justify-end a,
+            .flex.items-center.justify-end button {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+
+            /* Modal - perkecil padding */
+            #successModal .p-6,
+            #errorModal .p-6 {
+                padding: 1rem !important;
+            }
+
+            /* Modal header */
+            #successModal .text-xl,
+            #errorModal .text-xl {
+                font-size: 1rem !important;
+            }
+        }
     </style>
 @endpush
 
@@ -701,10 +763,7 @@
                 produkSelect.innerHTML =
                     '<option value="" class="bg-[#001D39] text-gray-400">Memuat produk...</option>';
 
-                // Gunakan URL lengkap dengan base URL
                 const url = `/laporan/get-products/${aplikasiId}`;
-
-                console.log('Fetching products from:', url); // Untuk debugging
 
                 fetch(url, {
                         method: 'GET',
@@ -716,15 +775,12 @@
                         }
                     })
                     .then(response => {
-                        console.log('Response status:', response.status);
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Response data:', data);
-
                         if (data.status === 'success' && data.products && data.products.length > 0) {
                             let options =
                                 '<option value="" class="bg-[#001D39] text-gray-400">Pilih Produk</option>';
