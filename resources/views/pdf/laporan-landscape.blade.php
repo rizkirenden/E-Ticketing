@@ -41,19 +41,16 @@
             color: #001D39;
             margin: 0;
             font-size: 18px;
-            /* Naik dari 16px */
         }
 
         .header-subtitle {
             margin: 0;
             color: #666;
             font-size: 10px;
-            /* Naik dari 8px */
         }
 
         .header-date {
             font-size: 10px;
-            /* Naik dari 8px */
             color: #666;
             margin: 0;
         }
@@ -70,7 +67,7 @@
             object-fit: contain;
         }
 
-        /* Filter Section - Jarak diperkecil */
+        /* Filter Section */
         .filter-section {
             margin-bottom: 10px;
             width: 100%;
@@ -81,7 +78,6 @@
             margin: 0 0 3px 0;
             color: #001D39;
             font-size: 12px;
-            /* Naik dari 10px */
             font-weight: 600;
             letter-spacing: 0.2px;
         }
@@ -107,7 +103,6 @@
 
         .filter-label {
             font-size: 8px;
-            /* Naik dari 6px */
             color: #6c757d;
             text-transform: uppercase;
             letter-spacing: 0.2px;
@@ -117,7 +112,6 @@
 
         .filter-value {
             font-size: 10px;
-            /* Naik dari 8px */
             font-weight: 600;
             color: #001D39;
             white-space: nowrap;
@@ -125,7 +119,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Summary Section - Jarak diperkecil */
+        /* Summary Section */
         .summary-section {
             margin-bottom: 10px;
             width: 100%;
@@ -134,7 +128,6 @@
 
         .summary-title {
             font-size: 12px;
-            /* Naik dari 10px */
             font-weight: 600;
             color: #495057;
             margin: 0 0 3px 0;
@@ -156,12 +149,12 @@
             padding: 2px 0;
             vertical-align: top;
             text-align: center;
-            width: 20%;
+            width: 14.28%;
+            /* Adjusted for 7 status columns */
         }
 
         .summary-label {
             font-size: 9px;
-            /* Naik dari 7px */
             color: #6c757d;
             white-space: nowrap;
             text-align: center;
@@ -170,7 +163,6 @@
 
         .summary-value {
             font-size: 14px;
-            /* Naik dari 12px */
             font-weight: 700;
             line-height: 1.1;
             white-space: nowrap;
@@ -197,13 +189,23 @@
             color: #721c24;
         }
 
-        /* Data Table - Jarak diperkecil */
+        /* New status summary colors */
+        .summary-value.pending {
+            color: #e67700;
+            /* Dark orange */
+        }
+
+        .summary-value.escalate {
+            color: #d73a49;
+            /* Red-orange */
+        }
+
+        /* Data Table */
         .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10px;
             font-size: 9px;
-            /* Naik dari 7px */
             table-layout: fixed;
         }
 
@@ -218,7 +220,6 @@
             font-weight: 600;
             border: 0;
             font-size: 9px;
-            /* Naik dari 7px */
         }
 
         .data-table td {
@@ -228,69 +229,55 @@
             border: 0;
             word-wrap: break-word;
             font-size: 9px;
-            /* Naik dari 7px */
         }
 
         .data-table tbody tr:last-child td {
             border-bottom: none;
         }
 
-        /* Atur lebar kolom data table (9 kolom) */
+        /* Column widths (9 columns) */
         .data-table th:nth-child(1) {
             width: 3%;
         }
 
-        /* No */
         .data-table th:nth-child(2) {
             width: 12%;
         }
 
-        /* No. Ticket */
         .data-table th:nth-child(3) {
             width: 12%;
         }
 
-        /* Pelapor */
         .data-table th:nth-child(4) {
             width: 10%;
         }
 
-        /* No. HP */
         .data-table th:nth-child(5) {
             width: 14%;
         }
 
-        /* Kantor */
         .data-table th:nth-child(6) {
             width: 14%;
         }
 
-        /* Aplikasi */
         .data-table th:nth-child(7) {
             width: 7%;
         }
 
-        /* Status */
         .data-table th:nth-child(8) {
             width: 9%;
         }
 
-        /* Tgl Laporan */
         .data-table th:nth-child(9) {
             width: 9%;
         }
 
-        /* Tgl Selesai */
-
         .status-badge {
             display: inline-block;
             padding: 2px 4px;
-            /* Naik dari 1px 3px */
             border-radius: 3px;
-            /* Naik dari 2px */
             font-weight: 600;
             font-size: 8px;
-            /* Naik dari 6px */
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -315,11 +302,21 @@
             color: #721c24;
         }
 
+        /* New status badge colors */
+        .status-pending {
+            background: #fff5e6;
+            color: #e67700;
+        }
+
+        .status-escalate {
+            background: #ffe6e8;
+            color: #d73a49;
+        }
+
         .footer {
             margin-top: 10px;
             text-align: center;
             font-size: 8px;
-            /* Naik dari 6px */
             color: #6c757d;
             border-top: 1px solid #dee2e6;
             padding: 5px 0 2px 0;
@@ -333,7 +330,7 @@
 </head>
 
 <body>
-    <!-- Header dengan Logo di Kanan - Menggunakan Tabel -->
+    <!-- Header dengan Logo di Kanan -->
     <table class="header-table" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td class="header-left" width="50%">
@@ -346,10 +343,8 @@
                         @if (isset($logoBase64) && $logoBase64)
                             <img src="{{ $logoBase64 }}" alt="Logo IT DIGITAL" class="logo-img">
                         @else
-                            <!-- Fallback jika logo tidak ada -->
                             <div
                                 style="width:50px;height:50px;background:#001D39;color:white;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;font-size:16px;">
-                                /* Naik dari 14px */
                                 IT
                             </div>
                         @endif
@@ -359,7 +354,7 @@
         </tr>
     </table>
 
-    <!-- Filter Information - Jarak rapat -->
+    <!-- Filter Information -->
     <div class="filter-section">
         <h3>FILTER YANG DITERAPKAN</h3>
         <table class="filter-table" cellspacing="0" cellpadding="0" border="0">
@@ -392,7 +387,7 @@
         </table>
     </div>
 
-    <!-- Summary Statistics - Jarak rapat -->
+    <!-- Summary Statistics -->
     <div class="summary-section">
         <div class="summary-title">STATISTIK LAPORAN</div>
         @php
@@ -400,6 +395,8 @@
             $processCount = $laporans->where('status', 'process')->count();
             $doneCount = $laporans->where('status', 'done')->count();
             $rejectCount = $laporans->where('status', 'reject')->count();
+            $pendingCount = $laporans->where('status', 'pending')->count();
+            $escalateCount = $laporans->where('status', 'escalate')->count();
         @endphp
         <table class="summary-table" cellspacing="0" cellpadding="0" border="0">
             <tr>
@@ -416,6 +413,14 @@
                     <div class="summary-value process">{{ $processCount }}</div>
                 </td>
                 <td>
+                    <div class="summary-label">PENDING</div>
+                    <div class="summary-value pending">{{ $pendingCount }}</div>
+                </td>
+                <td>
+                    <div class="summary-label">ESCALATE</div>
+                    <div class="summary-value escalate">{{ $escalateCount }}</div>
+                </td>
+                <td>
                     <div class="summary-label">DONE</div>
                     <div class="summary-value done">{{ $doneCount }}</div>
                 </td>
@@ -427,7 +432,7 @@
         </table>
     </div>
 
-    <!-- Data Table - 9 Kolom dengan ukuran kecil -->
+    <!-- Data Table - 9 Columns -->
     <table class="data-table" cellspacing="0" cellpadding="0" border="0">
         <thead>
             <tr>
@@ -463,7 +468,7 @@
         </tbody>
     </table>
 
-    <!-- Footer di tengah -->
+    <!-- Footer -->
     <div class="footer">
         <p>Dokumen ini digenerate secara otomatis oleh E-Ticketing System - © {{ date('Y') }} IT DIGITAL</p>
     </div>

@@ -15,6 +15,7 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ActivityLogPdfController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ProdukController; // Pastikan ini diimport
+use App\Http\Controllers\BaganitController; // Pastikan ini diimport
 
 // ===================================================
 // PUBLIC ROUTES - TIDAK MEMERLUKAN LOGIN
@@ -24,6 +25,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/bagan-it', [BaganitController::class, 'index'])->name('bagan.it');
 // Laporan Create - Bisa diakses publik
 Route::prefix('laporan')->name('laporan.')->group(function () {
     Route::get('/create', [LaporanController::class, 'create'])->name('create');

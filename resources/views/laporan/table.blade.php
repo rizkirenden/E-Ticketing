@@ -133,8 +133,8 @@
                                     </a>
                                 @endif
 
-                                <!-- Tombol Edit -->
-                                @if (isset($permissions['can_edit']) && $permissions['can_edit'])
+                                <!-- Tombol Edit (Hanya muncul jika status 'done') -->
+                                @if (isset($permissions['can_edit']) && $permissions['can_edit'] && $laporan->status == 'done')
                                     <a href="{{ route('laporan.edit', $laporan->id) }}"
                                         class="text-yellow-400 hover:text-yellow-300 transition-colors p-1 hover:bg-yellow-400/10 rounded-lg group"
                                         title="Edit">

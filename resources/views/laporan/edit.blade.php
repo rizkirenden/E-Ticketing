@@ -195,25 +195,29 @@
                             </p>
                         </div>
 
-                        <!-- Status (EDITABLE) -->
+                        <!-- Status (READONLY) -->
                         <div>
                             <label for="status" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1 sm:mb-2">
                                 Status <span class="text-red-400">*</span>
                             </label>
+                            <!-- Hidden input untuk mengirim nilai status ke server -->
+                            <input type="hidden" name="status" value="{{ $laporan->status }}">
+
                             <div class="relative">
-                                <select id="status" name="status"
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2.5 sm:py-3 appearance-none focus:border-green-400 focus:outline-none transition-colors @error('status') border-red-400 @enderror text-sm sm:text-base">
-                                    <option value="open" class="bg-[#001D39] text-yellow-400"
+                                <select id="status_display"
+                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2.5 sm:py-3 appearance-none focus:border-green-400 focus:outline-none transition-colors cursor-not-allowed text-sm sm:text-base"
+                                    disabled>
+                                    <option value="open" class="text-yellow-400"
                                         {{ $laporan->status == 'open' ? 'selected' : '' }}>Open</option>
-                                    <option value="process" class="bg-[#001D39] text-blue-400"
+                                    <option value="process" class="text-blue-400"
                                         {{ $laporan->status == 'process' ? 'selected' : '' }}>Process</option>
-                                    <option value="done" class="bg-[#001D39] text-green-400"
+                                    <option value="done" class="text-green-400"
                                         {{ $laporan->status == 'done' ? 'selected' : '' }}>Done</option>
-                                    <option value="reject" class="bg-[#001D39] text-red-400"
+                                    <option value="reject" class="text-red-400"
                                         {{ $laporan->status == 'reject' ? 'selected' : '' }}>Reject</option>
-                                    <option value="pending" class="bg-[#001D39] text-orange-400"
+                                    <option value="pending" class="text-orange-400"
                                         {{ $laporan->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="escalate" class="bg-[#001D39] text-purple-400"
+                                    <option value="escalate" class="text-purple-400"
                                         {{ $laporan->status == 'escalate' ? 'selected' : '' }}>Escalate</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -224,6 +228,15 @@
                                     </svg>
                                 </div>
                             </div>
+                            <p class="text-xs text-yellow-400 mt-1 flex items-start gap-1">
+                                <svg class="w-3 h-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                                    </path>
+                                </svg>
+                                <span>Status tidak dapat diubah melalui form ini</span>
+                            </p>
                             @error('status')
                                 <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -306,13 +319,13 @@
                         @enderror
                     </div>
 
-                    <!-- Multiple Lampiran dengan preview existing -->
+                    <!-- Lampiran (READONLY - hanya menampilkan file yang sudah ada) -->
                     <div class="mt-4 sm:mt-5">
                         <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                             Lampiran
                         </label>
 
-                        <!-- Existing Files Preview -->
+                        <!-- Existing Files Preview (READONLY - tanpa tombol hapus) -->
                         @if ($laporan->lampiran && count($laporan->lampiran) > 0)
                             <div class="mb-4">
                                 <p class="text-xs sm:text-sm text-gray-400 mb-2">File yang sudah ada
@@ -372,69 +385,29 @@
                                                 title="{{ $fileName }}">
                                                 {{ $fileName }}
                                             </p>
+                                            <!-- Tombol Hapus dihilangkan -->
                                             <div
                                                 class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                                                <div class="flex gap-2">
-                                                    <a href="{{ $fileUrl }}" target="_blank"
-                                                        class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded-full transition-colors">
-                                                        Lihat
-                                                    </a>
-                                                    <button type="button"
-                                                        onclick="markFileForDeletion(this, '{{ $file }}')"
-                                                        class="text-xs text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded-full transition-colors">
-                                                        Hapus
-                                                    </button>
-                                                </div>
+                                                <a href="{{ $fileUrl }}" target="_blank"
+                                                    class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-full transition-colors">
+                                                    Lihat
+                                                </a>
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
-                                <input type="hidden" name="deleted_files" id="deleted_files" value="[]">
+                            </div>
+                        @else
+                            <div class="text-center py-6 bg-white/5 border border-white/10 rounded-lg">
+                                <svg class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500 mx-auto mb-2" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-gray-400 text-sm">Tidak ada lampiran</p>
                             </div>
                         @endif
-
-                        <!-- Upload New Files -->
-                        <div class="mt-4">
-                            <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-                                Tambah Lampiran Baru
-                            </label>
-                            <div id="dropzone-area"
-                                class="relative border-2 border-dashed border-white/10 rounded-lg p-3 sm:p-4 hover:border-green-500/50 transition-all duration-300 cursor-pointer group">
-                                <input type="file" id="lampiran" name="lampiran[]" multiple
-                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
-
-                                <div id="preview-container" class="hidden mb-2">
-                                    <div id="files-preview" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                                    </div>
-                                </div>
-
-                                <div id="upload-placeholder"
-                                    class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
-                                    <svg class="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 group-hover:text-green-400 transition-colors"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                        </path>
-                                    </svg>
-                                    <div>
-                                        <p class="text-xs sm:text-sm text-gray-400">
-                                            <span class="text-green-400 font-semibold">Klik untuk upload</span> atau drag
-                                            and drop
-                                        </p>
-                                        <p class="text-[10px] sm:text-xs text-gray-500 mt-1">JPG, PNG, PDF, DOC (Max. 2MB
-                                            each)</p>
-                                    </div>
-                                    <span id="file-count" class="text-xs text-green-400 sm:ml-auto"></span>
-                                </div>
-                            </div>
-                        </div>
-                        @error('lampiran.*')
-                            <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                        <p class="text-xs text-gray-400 mt-2">
-                            <span class="text-yellow-400">*</span> File yang dihapus akan dihapus secara permanen.
-                        </p>
                     </div>
 
                     <!-- Submit Buttons -->
@@ -503,100 +476,6 @@
             cursor: not-allowed;
         }
 
-        .preview-item {
-            position: relative;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            transition: all 0.2s ease;
-        }
-
-        .preview-item:hover {
-            border-color: #10b981;
-            transform: scale(1.03);
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 50px;
-            object-fit: cover;
-        }
-
-        .preview-item .file-info {
-            padding: 3px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-size: 0.6rem;
-            text-align: center;
-        }
-
-        .preview-item .remove-file {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            z-index: 10;
-            border: none;
-            padding: 0;
-        }
-
-        .preview-item:hover .remove-file {
-            opacity: 1;
-        }
-
-        /* Mobile touch improvement for remove button */
-        @media (max-width: 640px) {
-            .preview-item .remove-file {
-                opacity: 1;
-                width: 22px;
-                height: 22px;
-            }
-
-            .preview-item .remove-file svg {
-                width: 12px;
-                height: 12px;
-            }
-
-            .existing-file-item .absolute {
-                opacity: 1;
-                background: rgba(0, 0, 0, 0.7);
-            }
-        }
-
-        #dropzone-area.dragover {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .spinner {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 2px solid #10b981;
-            width: 14px;
-            height: 14px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         /* Word break for long text */
         .break-all {
             word-break: break-all;
@@ -606,191 +485,57 @@
 
 @push('scripts')
     <script>
-        let selectedFiles = [];
-        let deletedFiles = [];
+        // Toggle fields berdasarkan status
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gunakan nilai status dari hidden input
+            const statusValue = document.querySelector('input[name="status"]').value;
+            const tanggalSelesaiField = document.getElementById('tanggalSelesaiField');
+            const pendingDeskripsiField = document.getElementById('pendingDeskripsiField');
+            const escalateDeskripsiField = document.getElementById('escalateDeskripsiField');
 
-        // Mark file for deletion
-        window.markFileForDeletion = function(button, filePath) {
-            const fileItem = button.closest('.existing-file-item');
-            if (fileItem) {
-                fileItem.style.opacity = '0.5';
-                fileItem.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                const deleteBtn = button;
-                deleteBtn.disabled = true;
-                deleteBtn.textContent = 'Terhapus';
-                deleteBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-                deleteBtn.classList.add('bg-gray-600', 'cursor-not-allowed');
+            function toggleFields() {
+                // Gunakan statusValue karena select sudah disabled
+                const status = statusValue;
 
-                deletedFiles.push(filePath);
-                document.getElementById('deleted_files').value = JSON.stringify(deletedFiles);
-            }
-        };
-
-        // File upload handling
-        const dropzone = document.getElementById('dropzone-area');
-        const fileInput = document.getElementById('lampiran');
-        const previewContainer = document.getElementById('preview-container');
-        const uploadPlaceholder = document.getElementById('upload-placeholder');
-        const filesPreview = document.getElementById('files-preview');
-        const fileCount = document.getElementById('file-count');
-
-        if (dropzone) {
-            dropzone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.classList.add('dragover');
-            });
-
-            dropzone.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.classList.remove('dragover');
-            });
-
-            dropzone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.classList.remove('dragover');
-                handleFiles(Array.from(e.dataTransfer.files));
-            });
-        }
-
-        if (fileInput) {
-            fileInput.addEventListener('change', function(e) {
-                handleFiles(Array.from(e.target.files));
-            });
-        }
-
-        function handleFiles(files) {
-            const validFiles = [];
-
-            for (let file of files) {
-                const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
-                if (isDuplicate) {
-                    alert(`File ${file.name} sudah ditambahkan`);
-                    continue;
+                // Tanggal Selesai untuk status done
+                if (status === 'done') {
+                    if (tanggalSelesaiField) tanggalSelesaiField.style.display = 'block';
+                } else {
+                    if (tanggalSelesaiField) tanggalSelesaiField.style.display = 'none';
                 }
 
-                if (file.size > 2 * 1024 * 1024) {
-                    alert(`File ${file.name} terlalu besar! Maksimal 2MB.`);
-                    continue;
+                // Pending Deskripsi untuk status pending
+                if (status === 'pending') {
+                    if (pendingDeskripsiField) pendingDeskripsiField.style.display = 'block';
+                    const pendingDesc = document.getElementById('pending_deskripsi');
+                    if (pendingDesc) pendingDesc.setAttribute('required', 'required');
+                } else {
+                    if (pendingDeskripsiField) pendingDeskripsiField.style.display = 'none';
+                    const pendingDesc = document.getElementById('pending_deskripsi');
+                    if (pendingDesc) pendingDesc.removeAttribute('required');
                 }
 
-                const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
-                const fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    alert(`Tipe file ${file.name} tidak diizinkan! Format yang diizinkan: JPG, PNG, PDF, DOC`);
-                    continue;
+                // Escalate Deskripsi untuk status escalate
+                if (status === 'escalate') {
+                    if (escalateDeskripsiField) escalateDeskripsiField.style.display = 'block';
+                    const escalateDesc = document.getElementById('escalate_deskripsi');
+                    if (escalateDesc) escalateDesc.setAttribute('required', 'required');
+                } else {
+                    if (escalateDeskripsiField) escalateDeskripsiField.style.display = 'none';
+                    const escalateDesc = document.getElementById('escalate_deskripsi');
+                    if (escalateDesc) escalateDesc.removeAttribute('required');
                 }
-
-                validFiles.push(file);
             }
 
-            if (validFiles.length > 0) {
-                selectedFiles = [...selectedFiles, ...validFiles];
-                updateFileInput();
-                displayPreviews();
-            }
-        }
-
-        function updateFileInput() {
-            const dataTransfer = new DataTransfer();
-            selectedFiles.forEach(file => dataTransfer.items.add(file));
-            if (fileInput) fileInput.files = dataTransfer.files;
-            if (fileCount) fileCount.textContent = `${selectedFiles.length} file(s) dipilih`;
-        }
-
-        function displayPreviews() {
-            if (selectedFiles.length > 0 && previewContainer && uploadPlaceholder && filesPreview) {
-                previewContainer.classList.remove('hidden');
-                uploadPlaceholder.classList.add('hidden');
-                filesPreview.innerHTML = '';
-
-                selectedFiles.forEach((file, index) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-                    const fileSize = (file.size / 1024).toFixed(2);
-                    const fileName = file.name.length > 12 ? file.name.substring(0, 10) + '...' : file.name;
-
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            previewItem.innerHTML = `
-                                <img src="${e.target.result}" alt="Preview">
-                                <div class="file-info">
-                                    <p class="truncate" title="${file.name}">${fileName}</p>
-                                    <p class="text-[8px] opacity-75">${fileSize} KB</p>
-                                </div>
-                                <button type="button" class="remove-file" onclick="removeNewFile(${index})">
-                                    <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                            `;
-                        };
-                        reader.readAsDataURL(file);
-                    } else {
-                        let icon = '';
-                        let bgColor = '';
-
-                        if (file.type === 'application/pdf') {
-                            icon =
-                                '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>';
-                            bgColor = 'bg-red-500/10';
-                        } else if (file.type.includes('word') || file.name.match(/\.docx?$/)) {
-                            icon =
-                                '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
-                            bgColor = 'bg-blue-500/10';
-                        } else {
-                            icon =
-                                '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>';
-                            bgColor = 'bg-gray-500/10';
-                        }
-
-                        previewItem.innerHTML = `
-                            <div class="p-2 text-center ${bgColor}">
-                                ${icon}
-                                <div class="file-info mt-1">
-                                    <p class="truncate text-[9px]" title="${file.name}">${fileName}</p>
-                                    <p class="text-[8px] opacity-75">${fileSize} KB</p>
-                                </div>
-                            </div>
-                            <button type="button" class="remove-file" onclick="removeNewFile(${index})">
-                                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        `;
-                    }
-
-                    filesPreview.appendChild(previewItem);
-                });
-            } else {
-                resetPreviews();
-            }
-        }
-
-        window.removeNewFile = function(index) {
-            selectedFiles.splice(index, 1);
-            updateFileInput();
-            selectedFiles.length > 0 ? displayPreviews() : resetPreviews();
-        };
-
-        function resetPreviews() {
-            if (previewContainer && uploadPlaceholder && filesPreview && fileCount) {
-                previewContainer.classList.add('hidden');
-                uploadPlaceholder.classList.remove('hidden');
-                filesPreview.innerHTML = '';
-                fileCount.textContent = '';
-            }
-            selectedFiles = [];
-            if (fileInput) fileInput.value = '';
-        }
+            // Initial toggle
+            toggleFields();
+        });
 
         // Form validation before submit
         document.getElementById('editLaporanForm').addEventListener('submit', function(e) {
-            const status = document.getElementById('status').value;
+            const statusInput = document.querySelector('input[name="status"]');
+            const status = statusInput ? statusInput.value : '';
+
             if (status === 'done') {
                 const solusi = document.getElementById('solusi').value.trim();
                 if (solusi === '') {
@@ -799,49 +544,6 @@
                     }
                 }
             }
-        });
-
-        // Toggle fields berdasarkan status
-        document.addEventListener('DOMContentLoaded', function() {
-            const statusSelect = document.getElementById('status');
-            const tanggalSelesaiField = document.getElementById('tanggalSelesaiField');
-            const pendingDeskripsiField = document.getElementById('pendingDeskripsiField');
-            const escalateDeskripsiField = document.getElementById('escalateDeskripsiField');
-
-            function toggleFields() {
-                const status = statusSelect.value;
-
-                // Tanggal Selesai untuk status done
-                if (status === 'done') {
-                    tanggalSelesaiField.style.display = 'block';
-                } else {
-                    tanggalSelesaiField.style.display = 'none';
-                }
-
-                // Pending Deskripsi untuk status pending
-                if (status === 'pending') {
-                    pendingDeskripsiField.style.display = 'block';
-                    document.getElementById('pending_deskripsi').setAttribute('required', 'required');
-                } else {
-                    pendingDeskripsiField.style.display = 'none';
-                    document.getElementById('pending_deskripsi').removeAttribute('required');
-                }
-
-                // Escalate Deskripsi untuk status escalate
-                if (status === 'escalate') {
-                    escalateDeskripsiField.style.display = 'block';
-                    document.getElementById('escalate_deskripsi').setAttribute('required', 'required');
-                } else {
-                    escalateDeskripsiField.style.display = 'none';
-                    document.getElementById('escalate_deskripsi').removeAttribute('required');
-                }
-            }
-
-            // Initial toggle
-            toggleFields();
-
-            // Toggle on change
-            statusSelect.addEventListener('change', toggleFields);
         });
     </script>
 @endpush

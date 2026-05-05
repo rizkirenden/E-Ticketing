@@ -146,7 +146,8 @@
             padding: 3px 0;
             vertical-align: top;
             text-align: center;
-            width: 20%;
+            width: 14.28%;
+            /* Adjusted for 7 status columns */
         }
 
         .summary-label {
@@ -183,6 +184,17 @@
 
         .summary-value.reject {
             color: #721c24;
+        }
+
+        /* New status summary colors */
+        .summary-value.pending {
+            color: #e67700;
+            /* Dark orange for pending */
+        }
+
+        .summary-value.escalate {
+            color: #d73a49;
+            /* Red-orange for escalate */
         }
 
         /* Data Table - Seperti landscape */
@@ -287,6 +299,19 @@
             color: #721c24;
         }
 
+        /* New status badge colors */
+        .status-pending {
+            background: #fff5e6;
+            /* Light orange background */
+            color: #e67700;
+        }
+
+        .status-escalate {
+            background: #ffe6e8;
+            /* Light red background */
+            color: #d73a49;
+        }
+
         /* Footer */
         .footer {
             margin-top: 15px;
@@ -369,6 +394,8 @@
             $processCount = $laporans->where('status', 'process')->count();
             $doneCount = $laporans->where('status', 'done')->count();
             $rejectCount = $laporans->where('status', 'reject')->count();
+            $pendingCount = $laporans->where('status', 'pending')->count();
+            $escalateCount = $laporans->where('status', 'escalate')->count();
         @endphp
         <table class="summary-table" cellspacing="0" cellpadding="0" border="0">
             <tr>
@@ -383,6 +410,14 @@
                 <td>
                     <div class="summary-label">PROCESS</div>
                     <div class="summary-value process">{{ $processCount }}</div>
+                </td>
+                <td>
+                    <div class="summary-label">PENDING</div>
+                    <div class="summary-value pending">{{ $pendingCount }}</div>
+                </td>
+                <td>
+                    <div class="summary-label">ESCALATE</div>
+                    <div class="summary-value escalate">{{ $escalateCount }}</div>
                 </td>
                 <td>
                     <div class="summary-label">DONE</div>
