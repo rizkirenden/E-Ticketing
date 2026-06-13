@@ -49,6 +49,7 @@
                                             ($perm->can_edit ? 1 : 0) +
                                             ($perm->can_delete ? 1 : 0) +
                                             ($perm->can_export ? 1 : 0) +
+                                            ($perm->can_excel ? 1 : 0) +
                                             ($perm->can_import ? 1 : 0);
                                     });
                                 @endphp

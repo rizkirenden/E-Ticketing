@@ -100,6 +100,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // ===================================================
+    // LAPORAN EXCEL ROUTE - PERMISSION TERPISAH
+    // ===================================================
+    Route::prefix('laporan')->name('laporan.')->middleware(['auth', 'permission:laporan,excel'])->group(function () {
+        Route::get('/export/excel', [LaporanController::class, 'exportExcel'])->name('export-excel');
+    });
+
+    // ===================================================
     // ACTIVITY LOGS ROUTES
     // ===================================================
   // Activity Logs Routes

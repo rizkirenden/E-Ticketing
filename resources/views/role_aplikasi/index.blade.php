@@ -29,9 +29,7 @@
                         </svg>
                     </div>
 
-
                 </div>
-
                 @if ($permissions['can_create'])
                     <button onclick="openCreateModal()"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-2 text-sm">
@@ -139,7 +137,6 @@
                     <h3 class="text-xl font-semibold text-white mb-2">Konfirmasi Hapus</h3>
                     <p class="text-gray-400 mb-6">Apakah Anda yakin ingin menghapus role aplikasi <span
                             id="deleteRoleaplikasiName" class="text-white font-semibold"></span>?</p>
-
                     <form id="deleteForm">
                         @csrf
                         @method('DELETE')
@@ -161,46 +158,7 @@
         </div>
     @endif
 
-    <!-- Import Modal -->
-    @if ($permissions['can_import'])
-        <div id="importModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-[#001D39] border border-white/10 rounded-2xl w-full max-w-md p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-semibold text-white">Import Data Role Aplikasi</h3>
-                    <button onclick="closeImportModal()" class="text-gray-400 hover:text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
 
-                <form id="importForm" enctype="multipart/form-data">
-                    @csrf
-
-                    <div class="mb-4">
-                        <label for="import_file" class="block text-sm font-medium text-gray-300 mb-2">File
-                            Excel/CSV</label>
-                        <input type="file" id="import_file" name="file" accept=".xlsx,.xls,.csv"
-                            class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2.5 focus:border-blue-400 focus:outline-none transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
-                        <p class="text-gray-400 text-xs mt-2">Format file: .xlsx, .xls, .csv (max 2MB)</p>
-                        <div id="file_error" class="text-red-400 text-xs mt-1 hidden"></div>
-                    </div>
-
-                    <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="closeImportModal()"
-                            class="flex-1 px-4 py-2.5 border border-white/10 text-gray-300 rounded-lg hover:bg-white/5 transition-colors">
-                            Batal
-                        </button>
-                        <button type="submit"
-                            class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg transition-colors">
-                            Import Data
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    @endif
 @endsection
 
 @push('styles')

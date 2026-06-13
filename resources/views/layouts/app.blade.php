@@ -9,7 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <title>@yield('title', 'E-TICKETING') - Aplikasi Tiketing</title>
+    <title>@yield('title', 'E-TICKETING')</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/logo diamond1.png') }}">
+
     @vite('resources/css/app.css')
     @stack('styles')
     <style>

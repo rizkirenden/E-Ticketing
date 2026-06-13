@@ -63,6 +63,12 @@ trait HasPermission
         $this->checkPermission($menu, 'update_status');
     }
 
+    // Tambahkan method untuk authorize Excel
+    protected function authorizeExcel($menu)
+    {
+        $this->checkPermission($menu, 'excel');
+    }
+
     protected function getButtonPermissions($menu)
     {
         return PermissionHelper::getButtonPermissions($menu);

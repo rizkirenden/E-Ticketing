@@ -20,6 +20,7 @@
         'can_export' => 'Export',
         'can_import' => 'Import',
         'can_wa' => 'WA',
+        'can_excel' => 'Excel',
         'can_show' => 'Show',
         'can_update_status' => 'Update Status',
     ];
@@ -47,6 +48,7 @@
             'can_export',
             'can_import',
             'can_wa',
+            'can_excel',
             'can_show',
             'can_update_status',
         ],

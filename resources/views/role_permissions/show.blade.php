@@ -55,6 +55,7 @@
                                     ($perm->can_import ? 1 : 0) +
                                     ($perm->can_wa ? 1 : 0) +
                                     ($perm->can_show ? 1 : 0) +
+                                    ($perm->can_excel ? 1 : 0) +
                                     ($perm->can_update_status ? 1 : 0);
                             });
 
@@ -115,6 +116,7 @@
                                             'export',
                                             'import',
                                             'wa',
+                                            'excel',
                                             'show',
                                             'update_status',
                                         ];

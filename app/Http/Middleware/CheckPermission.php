@@ -17,12 +17,10 @@ class CheckPermission
             abort(403, 'Unauthorized');
         }
 
-        // SUPERADMIN selalu memiliki akses penuh
         if ($user->role && $user->role->nama_role === 'SUPERADMIN') {
             return $next($request);
         }
 
-        // Cek permission
         $permission = $user->role->permissions()
             ->where('menu_name', $menu)
             ->first();
@@ -35,6 +33,7 @@ class CheckPermission
             'export' => 'can_export',
             'import' => 'can_import',
             'wa' => 'can_wa',
+            'excel' => 'can_excel',  // ← PASTIKAN INI ADA
             'show' => 'can_show',
             'update_status' => 'can_update_status',
         ];

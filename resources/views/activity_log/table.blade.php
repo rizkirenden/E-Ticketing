@@ -1,5 +1,18 @@
 <!-- Activity Logs Table -->
 <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+    <!-- Header dengan Filter dan Tombol Export -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+            </svg>
+            <h3 class="text-white font-semibold text-lg">Activity Logs</h3>
+            <span class="bg-white/10 text-gray-300 px-2 py-0.5 rounded text-xs">{{ $logs->total() }} total</span>
+        </div>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead>
@@ -34,10 +47,12 @@
                                     'LOGOUT' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
                                     'LOGIN_FAILED' => 'bg-orange-500/20 text-orange-400 border-orange-500/30',
                                     'WHATSAPP' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                    'EXPORT_EXCEL' => 'bg-teal-500/20 text-teal-400 border-teal-500/30',
                                 ];
                                 $activityColor =
                                     $activityColors[$log->aktivitas] ??
                                     'bg-gray-500/20 text-gray-400 border-gray-500/30';
+
                                 $activityIcon = [
                                     'CREATE' => '➕',
                                     'UPDATE' => '✏️',
@@ -46,6 +61,7 @@
                                     'LOGOUT' => '👋',
                                     'LOGIN_FAILED' => '❌',
                                     'WHATSAPP' => '📱',
+                                    'EXPORT_EXCEL' => '📊',
                                 ];
                                 $icon = $activityIcon[$log->aktivitas] ?? '•';
                             @endphp
@@ -72,7 +88,8 @@
                             </span>
                         </td>
                         <td class="py-3 px-4">
-                            <div class="text-gray-300 text-sm">{{ $log->tanggal_aktivitas->format('d/m/Y') }}</div>
+                            <div class="text-gray-300 text-sm">{{ $log->tanggal_aktivitas->format('d/m/Y H:i:s') }}
+                            </div>
                         </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center gap-2">
@@ -93,7 +110,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="py-12 text-center text-gray-400 text-sm">
+                        <td colspan="7" class="py-12 text-center text-gray-400 text-sm">
                             <div class="flex flex-col items-center gap-3">
                                 <svg class="w-16 h-16 text-gray-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -102,8 +119,7 @@
                                     </path>
                                 </svg>
                                 <p class="text-lg font-medium">Tidak ada activity logs</p>
-                                <p class="text-xs text-gray-500 max-w-md">
-                                    Belum ada aktivitas yang tercatat dalam sistem
+                                <p class="text-xs text-gray-500 max-w-md">Belum ada aktivitas yang tercatat dalam sistem
                                 </p>
                                 <button onclick="resetFilters()"
                                     class="mt-2 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
@@ -136,7 +152,6 @@
             </p>
 
             <div class="flex items-center gap-2 order-1 sm:order-2">
-                <!-- Previous Page Link -->
                 @if ($logs->onFirstPage())
                     <span
                         class="px-3 py-1.5 bg-white/5 text-gray-500 rounded-lg text-sm cursor-not-allowed flex items-center gap-1 border border-white/10">
@@ -157,7 +172,6 @@
                     </a>
                 @endif
 
-                <!-- Pagination Elements -->
                 <div class="flex items-center gap-1">
                     @php
                         $totalPages = $logs->lastPage();
@@ -182,9 +196,7 @@
 
                     @if ($start > 1)
                         <a href="{{ $logs->url(1) }}"
-                            class="pagination-link w-8 h-8 flex items-center justify-center bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm border border-white/10 hover:border-blue-400/30">
-                            1
-                        </a>
+                            class="pagination-link w-8 h-8 flex items-center justify-center bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm border border-white/10 hover:border-blue-400/30">1</a>
                         @if ($start > 2)
                             <span class="w-8 h-8 flex items-center justify-center text-gray-500">...</span>
                         @endif
@@ -193,9 +205,7 @@
                     @for ($i = $start; $i <= $end; $i++)
                         <a href="{{ $logs->url($i) }}"
                             class="pagination-link w-8 h-8 flex items-center justify-center text-sm rounded-lg transition-all border
-                                {{ $logs->currentPage() == $i
-                                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium shadow-lg shadow-blue-500/25 border-transparent'
-                                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border-white/10 hover:border-blue-400/30' }}">
+                            {{ $logs->currentPage() == $i ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium shadow-lg shadow-blue-500/25 border-transparent' : 'bg-white/5 text-gray-300 hover:bg-white/10 border-white/10 hover:border-blue-400/30' }}">
                             {{ $i }}
                         </a>
                     @endfor
@@ -205,13 +215,10 @@
                             <span class="w-8 h-8 flex items-center justify-center text-gray-500">...</span>
                         @endif
                         <a href="{{ $logs->url($totalPages) }}"
-                            class="pagination-link w-8 h-8 flex items-center justify-center bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm border border-white/10 hover:border-blue-400/30">
-                            {{ $totalPages }}
-                        </a>
+                            class="pagination-link w-8 h-8 flex items-center justify-center bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm border border-white/10 hover:border-blue-400/30">{{ $totalPages }}</a>
                     @endif
                 </div>
 
-                <!-- Next Page Link -->
                 @if ($logs->hasMorePages())
                     <a href="{{ $logs->nextPageUrl() }}"
                         class="pagination-link px-3 py-1.5 bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center gap-1 border border-white/10 hover:border-blue-400/30">
@@ -238,7 +245,6 @@
 
 @push('styles')
     <style>
-        /* Line clamp untuk deskripsi */
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -246,7 +252,6 @@
             overflow: hidden;
         }
 
-        /* Hover effect untuk row */
         tbody tr {
             transition: all 0.2s ease;
         }
@@ -255,7 +260,6 @@
             color: #fff;
         }
 
-        /* Custom scrollbar untuk overflow-x */
         .overflow-x-auto {
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
@@ -279,15 +283,8 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Animasi untuk pagination link */
         .pagination-link {
             transition: all 0.2s ease;
-        }
-
-        /* Styling untuk badge status */
-        .status-badge {
-            position: relative;
-            overflow: hidden;
         }
     </style>
 @endpush

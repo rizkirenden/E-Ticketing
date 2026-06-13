@@ -113,6 +113,24 @@
                             </button>
                         </div>
 
+                        <!-- Tombol Excel - Hanya tampil jika punya permission excel -->
+                        @if (isset($permissions['can_excel']) && $permissions['can_excel'])
+                            <div>
+                                <label
+                                    class="block text-[10px] sm:text-xs font-medium text-gray-300 mb-1 invisible">Excel</label>
+                                <button onclick="openExcelModal()"
+                                    class="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm transition-all transform hover:scale-[1.02] flex items-center justify-center gap-1 font-medium">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                        </path>
+                                    </svg>
+                                    Excel
+                                </button>
+                            </div>
+                        @endif
+
                         <!-- Reset Filter Button -->
                         <div>
                             <label
@@ -286,7 +304,7 @@
         </div>
     </div>
 
-    <!-- Download PDF Modal - Responsive -->
+    <!-- Download PDF Modal - Responsive with Info Notice -->
     <div id="pdfModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
         <div class="bg-[#001D39] border border-white/10 rounded-xl sm:rounded-2xl w-full max-w-sm sm:max-w-md p-4 sm:p-6">
             <div class="flex justify-between items-center mb-4 sm:mb-6">
@@ -297,6 +315,35 @@
                         </path>
                     </svg>
                 </button>
+            </div>
+
+            <!-- Informasi Export PDF -->
+            <div class="mb-4 sm:mb-6">
+                <div class="bg-blue-500/20 border border-blue-500/50 rounded-lg p-3 sm:p-4 mb-4">
+                    <div class="flex items-center gap-2 text-blue-400 mb-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="font-medium">Informasi Export PDF</span>
+                    </div>
+                    <p class="text-gray-300 text-xs sm:text-sm">
+                        Data akan diexport ke file PDF dengan format yang sudah ditentukan.
+                        Proses export akan mengikuti filter yang sedang aktif.
+                    </p>
+                </div>
+
+                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                    <p class="text-yellow-400 text-xs sm:text-sm flex items-start gap-2">
+                        <svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                            </path>
+                        </svg>
+                        <span>Pastikan filter sudah sesuai sebelum mendownload PDF.</span>
+                    </p>
+                </div>
             </div>
 
             <form id="pdfForm" action="{{ route('laporan.pdf') }}" method="GET" target="_blank">
@@ -356,6 +403,75 @@
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Download PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="excelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-[#001D39] border border-white/10 rounded-xl sm:rounded-2xl w-full max-w-sm sm:max-w-md p-4 sm:p-6">
+            <div class="flex justify-between items-center mb-4 sm:mb-6">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Konfirmasi Export Excel</h3>
+                <button onclick="closeExcelModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mb-4 sm:mb-6">
+                <div class="bg-green-500/20 border border-green-500/50 rounded-lg p-3 sm:p-4 mb-4">
+                    <div class="flex items-center gap-2 text-green-400 mb-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="font-medium">Informasi Export</span>
+                    </div>
+                    <p class="text-gray-300 text-xs sm:text-sm">
+                        Data akan diexport ke file Excel (.xlsx) dengan format yang sudah ditentukan.
+                        Proses export akan mengikuti filter yang sedang aktif.
+                    </p>
+                </div>
+
+                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                    <p class="text-yellow-400 text-xs sm:text-sm flex items-start gap-2">
+                        <svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                            </path>
+                        </svg>
+                        <span>Pastikan filter sudah sesuai sebelum mengexport data.</span>
+                    </p>
+                </div>
+            </div>
+
+            <form id="excelForm" action="{{ route('laporan.export-excel') }}" method="GET" target="_blank">
+                <!-- Hidden inputs untuk menyimpan filter saat ini -->
+                <input type="hidden" name="search" id="excelSearch" value="{{ request('search') }}">
+                <input type="hidden" name="kantor" id="excelKantor" value="{{ request('kantor') }}">
+                <input type="hidden" name="aplikasi" id="excelAplikasi" value="{{ request('aplikasi') }}">
+                <input type="hidden" name="status" id="excelStatus" value="{{ request('status') }}">
+                <input type="hidden" name="tanggal_awal" id="excelTanggalAwal" value="{{ request('tanggal_awal') }}">
+                <input type="hidden" name="tanggal_akhir" id="excelTanggalAkhir"
+                    value="{{ request('tanggal_akhir') }}">
+
+                <div class="flex gap-2 sm:gap-3">
+                    <button type="button" onclick="closeExcelModal()"
+                        class="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 border border-white/10 text-gray-300 rounded-lg hover:bg-white/5 transition-colors text-xs sm:text-sm">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all transform hover:scale-[1.02] flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                        Export Excel
                     </button>
                 </div>
             </form>
@@ -616,6 +732,31 @@
             document.getElementById('pdfModal').classList.add('hidden');
             document.getElementById('pdfModal').classList.remove('flex');
         }
+
+        // Excel Modal functions
+        function openExcelModal() {
+            document.getElementById('excelSearch').value = searchInput?.value || '';
+            document.getElementById('excelKantor').value = filterKantor?.value || '';
+            document.getElementById('excelAplikasi').value = filterAplikasi?.value || '';
+            document.getElementById('excelStatus').value = filterStatus?.value || '';
+            document.getElementById('excelTanggalAwal').value = tanggalAwal?.value || '';
+            document.getElementById('excelTanggalAkhir').value = tanggalAkhir?.value || '';
+            document.getElementById('excelModal').classList.remove('hidden');
+            document.getElementById('excelModal').classList.add('flex');
+        }
+
+        function closeExcelModal() {
+            document.getElementById('excelModal').classList.add('hidden');
+            document.getElementById('excelModal').classList.remove('flex');
+        }
+
+        // Update window click event untuk menutup excel modal
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
+            if (e.target === document.getElementById('statusModal')) closeStatusModal();
+            if (e.target === document.getElementById('pdfModal')) closePdfModal();
+            if (e.target === document.getElementById('excelModal')) closeExcelModal(); // Tambahkan ini
+        });
 
         // WhatsApp
         function sendWhatsApp(laporanId) {

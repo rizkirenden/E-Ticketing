@@ -166,4 +166,20 @@ class Laporan extends Model
 
         return $basePrefix . '-' . $newSequence;
     }
+
+    public function histories()
+{
+    return $this->hasMany(LaporanHistory::class)->orderBy('changed_at', 'asc');
+}
+
+public function addHistory($oldStatus, $newStatus, $description = null, $updatedBy = null)
+{
+    return $this->histories()->create([
+        'old_status' => $oldStatus,
+        'new_status' => $newStatus,
+        'description' => $description,
+        'updated_by' => $updatedBy ?? (auth()->check() ? auth()->user()->name : 'System'),
+        'changed_at' => now()
+    ]);
+}
 }

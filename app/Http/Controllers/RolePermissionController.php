@@ -48,6 +48,7 @@ class RolePermissionController extends Controller
             'can_export' => 'Export',
             'can_import' => 'Import',
             'can_wa' => 'WA',
+            'can_excel' => 'Excel',
             'can_show' => 'Show',
             'can_update_status' => 'Update Status',
         ];
@@ -63,6 +64,7 @@ class RolePermissionController extends Controller
                 'can_export',
                 'can_import',
                 'can_wa',
+                'can_excel',
                 'can_show',
                 'can_update_status'
             ],
@@ -110,6 +112,7 @@ class RolePermissionController extends Controller
                         'can_export' => false,
                         'can_import' => false,
                         'can_wa' => false,
+                        'can_excel' => false,
                         'can_show' => false,
                         'can_update_status' => false,
                     ]);
@@ -126,6 +129,7 @@ class RolePermissionController extends Controller
                         'can_export' => isset($actions['can_export']),
                         'can_import' => isset($actions['can_import']),
                         'can_wa' => false,
+                        'can_excel' => isset($actions['can_excel']), // ✅ DIPERBAIKI
                         'can_show' => false,
                         'can_update_status' => false,
                     ]);
@@ -141,6 +145,7 @@ class RolePermissionController extends Controller
                         'can_export' => isset($actions['can_export']),
                         'can_import' => isset($actions['can_import']),
                         'can_wa' => isset($actions['can_wa']),
+                        'can_excel' => isset($actions['can_excel']),
                         'can_show' => isset($actions['can_show']),
                         'can_update_status' => isset($actions['can_update_status']),
                     ]);
@@ -150,11 +155,7 @@ class RolePermissionController extends Controller
             $role = Role::find($roleId);
 
             // Log activity
-            $this->logCreate(
-                'ROLE_PERMISSION',
-                $roleId,
-                "Menambahkan permission untuk role: {$role->nama_role}"
-            );
+            $this->logCreate('ROLE_PERMISSION', $roleId, "Menambahkan permission untuk role: {$role->nama_role}");
 
             return redirect()->route('role-permissions.index')
                 ->with('success', 'Permission berhasil ditambahkan');
@@ -217,6 +218,7 @@ class RolePermissionController extends Controller
             'can_export' => 'Export',
             'can_import' => 'Import',
             'can_wa' => 'WA',
+            'can_excel' => 'Excel',
             'can_show' => 'Show',
             'can_update_status' => 'Update Status',
         ];
@@ -232,6 +234,7 @@ class RolePermissionController extends Controller
                 'can_export',
                 'can_import',
                 'can_wa',
+                'can_excel',
                 'can_show',
                 'can_update_status'
             ],
@@ -256,6 +259,7 @@ class RolePermissionController extends Controller
                 'can_export' => $perm->can_export,
                 'can_import' => $perm->can_import,
                 'can_wa' => $perm->can_wa,
+                'can_excel' => $perm->can_excel,
                 'can_show' => $perm->can_show,
                 'can_update_status' => $perm->can_update_status,
             ];
@@ -297,6 +301,7 @@ class RolePermissionController extends Controller
                         'can_export' => false,
                         'can_import' => false,
                         'can_wa' => false,
+                        'can_excel' => isset($actions['can_excel']), // ✅ DIPERBAIKI
                         'can_show' => false,
                         'can_update_status' => false,
                     ];
@@ -313,6 +318,7 @@ class RolePermissionController extends Controller
                         'can_export' => isset($actions['can_export']),
                         'can_import' => isset($actions['can_import']),
                         'can_wa' => false,
+                        'can_excel' => isset($actions['can_excel']), // ✅ DIPERBAIKI
                         'can_show' => false,
                         'can_update_status' => false,
                     ];
@@ -328,6 +334,7 @@ class RolePermissionController extends Controller
                         'can_export' => isset($actions['can_export']),
                         'can_import' => isset($actions['can_import']),
                         'can_wa' => isset($actions['can_wa']),
+                        'can_excel' => isset($actions['can_excel']),
                         'can_show' => isset($actions['can_show']),
                         'can_update_status' => isset($actions['can_update_status']),
                     ];
@@ -416,6 +423,7 @@ class RolePermissionController extends Controller
                             'can_export' => false,
                             'can_import' => false,
                             'can_wa' => false,
+                            'can_excel' => isset($actions['can_excel']), // ✅ DIPERBAIKI
                             'can_show' => false,
                             'can_update_status' => false,
                         ]
@@ -433,6 +441,7 @@ class RolePermissionController extends Controller
                             'can_export' => isset($actions['can_export']),
                             'can_import' => isset($actions['can_import']),
                             'can_wa' => false,
+                            'can_excel' => isset($actions['can_excel']), // ✅ DIPERBAIKI
                             'can_show' => false,
                             'can_update_status' => false,
                         ]
@@ -449,6 +458,7 @@ class RolePermissionController extends Controller
                             'can_export' => isset($actions['can_export']),
                             'can_import' => isset($actions['can_import']),
                             'can_wa' => isset($actions['can_wa']),
+                            'can_excel' => isset($actions['can_excel']),
                             'can_show' => isset($actions['can_show']),
                             'can_update_status' => isset($actions['can_update_status']),
                         ]
@@ -514,6 +524,7 @@ class RolePermissionController extends Controller
                         'can_export' => false,
                         'can_import' => false,
                         'can_wa' => false,
+                        'can_excel' => false,
                         'can_show' => false,
                         'can_update_status' => false,
                     ];
@@ -530,6 +541,7 @@ class RolePermissionController extends Controller
                         'can_export' => $perm->can_export,
                         'can_import' => $perm->can_import,
                         'can_wa' => false,
+                        'can_excel' => $perm->can_excel,
                         'can_show' => false,
                         'can_update_status' => false,
                     ];
@@ -545,6 +557,7 @@ class RolePermissionController extends Controller
                         'can_export' => $perm->can_export,
                         'can_import' => $perm->can_import,
                         'can_wa' => $perm->can_wa,
+                        'can_excel' => $perm->can_excel,
                         'can_show' => $perm->can_show,
                         'can_update_status' => $perm->can_update_status,
                     ];
@@ -599,6 +612,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -610,6 +624,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -618,6 +633,12 @@ class RolePermissionController extends Controller
                     'can_create' => false,
                     'can_edit' => false,
                     'can_delete' => false,
+                    'can_export' => false,
+                    'can_import' => false,
+                    'can_wa' => false,
+                    'can_excel' => false,
+                    'can_show' => false,
+                    'can_update_status' => false,
                 ],
                 'produk' => [
                     'can_view' => true,
@@ -626,6 +647,10 @@ class RolePermissionController extends Controller
                     'can_delete' => false,
                     'can_export' => true,
                     'can_import' => false,
+                    'can_wa' => false,
+                    'can_excel' => false,
+                    'can_show' => false,
+                    'can_update_status' => false,
                 ],
                 'user' => [
                     'can_view' => true,
@@ -635,6 +660,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -646,6 +672,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -657,6 +684,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -672,6 +700,7 @@ class RolePermissionController extends Controller
                     'can_export' => true,
                     'can_import' => false,
                     'can_wa' => false,
+                    'can_excel' => false,
                     'can_show' => true,
                     'can_update_status' => false,
                 ],
@@ -689,6 +718,7 @@ class RolePermissionController extends Controller
                     'can_export' => $actions['can_export'] ?? false,
                     'can_import' => $actions['can_import'] ?? false,
                     'can_wa' => $actions['can_wa'] ?? false,
+                    'can_excel' => $actions['can_excel'] ?? false,
                     'can_show' => $actions['can_show'] ?? false,
                     'can_update_status' => $actions['can_update_status'] ?? false,
                 ];
@@ -749,6 +779,7 @@ class RolePermissionController extends Controller
             'can_export' => 'Export',
             'can_import' => 'Import',
             'can_wa' => 'WA',
+            'can_excel' => 'Excel',
             'can_show' => 'Show',
             'can_update_status' => 'Update Status',
         ];
@@ -761,6 +792,7 @@ class RolePermissionController extends Controller
             'can_export' => 'purple',
             'can_import' => 'orange',
             'can_wa' => 'pink',
+            'can_excel' => 'black',
             'can_show' => 'indigo',
             'can_update_status' => 'teal',
         ];
@@ -776,6 +808,7 @@ class RolePermissionController extends Controller
                 'can_export',
                 'can_import',
                 'can_wa',
+                'can_excel',
                 'can_show',
                 'can_update_status'
             ],
@@ -821,6 +854,7 @@ class RolePermissionController extends Controller
                 'can_export' => 'Export',
                 'can_import' => 'Import',
                 'can_wa' => 'WA',
+                'can_excel' => 'Excel',
                 'can_show' => 'Show',
                 'can_update_status' => 'Update Status',
             ];
@@ -870,6 +904,7 @@ class RolePermissionController extends Controller
                 'can_export' => 'Export',
                 'can_import' => 'Import',
                 'can_wa' => 'WA',
+                'can_excel' => 'Excel',
                 'can_show' => 'Show',
                 'can_update_status' => 'Update Status',
             ];

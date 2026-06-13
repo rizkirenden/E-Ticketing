@@ -293,7 +293,7 @@
                         <div class="flex items-center justify-end gap-3 mt-5 pt-3 border-t border-white/10">
                             <a href="/"
                                 class="px-4 py-2 border border-white/10 text-gray-300 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                                Batal
+                                Kembali
                             </a>
                             <button type="submit" id="submitBtn"
                                 class="group relative px-5 py-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed">

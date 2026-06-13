@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                     'nama' => 'Super Administrator',
                     'jabatan' => 'System Administrator',
                     'username' => 'superadmin',
-                    'password' => Hash::make('password123'), // Ganti dengan password yang aman
+                    'password' => Hash::make('password123'),
                     'role_id' => $superadminRole->id,
                 ]
             );

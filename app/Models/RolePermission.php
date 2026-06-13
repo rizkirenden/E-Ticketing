@@ -16,6 +16,7 @@ class RolePermission extends Model
         'can_export',
         'can_import',
         'can_wa',
+        'can_excel',        // baris bangsat
         'can_show',
         'can_update_status'
     ];
@@ -27,7 +28,8 @@ class RolePermission extends Model
         'can_delete' => 'boolean',
         'can_export' => 'boolean',
         'can_import' => 'boolean',
-         'can_wa' => 'boolean',
+        'can_wa' => 'boolean',
+        'can_excel' => 'boolean',   // baris bangsat
         'can_show' => 'boolean',
         'can_update_status' => 'boolean'
     ];

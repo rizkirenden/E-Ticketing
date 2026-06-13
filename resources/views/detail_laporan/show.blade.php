@@ -3,15 +3,11 @@
 @section('title', 'Detail Laporan - ' . $laporan->nomor_ticket)
 
 @section('content')
-    <!-- Container utama dengan fixed height dan overflow hidden -->
     <div class="h-screen overflow-hidden bg-gradient-to-br from-[#001D39] via-[#002B4F] to-[#001D39]">
-
-        <!-- Hero Section with Ticket Number - Bagian yang bisa di-scroll -->
         <div class="h-full overflow-y-auto scrollbar-thin">
-            <!-- Animated Background with Logos - Sembunyikan di mobile -->
             <div class="relative">
+                <!-- Animated Background -->
                 <div class="absolute inset-0 opacity-10 pointer-events-none hidden md:block">
-                    <!-- Logo besar di berbagai posisi dengan animasi berbeda -->
                     <div class="absolute top-0 -left-4 w-72 h-72 animate-float-slow">
                         <img src="{{ asset('assets/logo2.PNG') }}" alt="Logo"
                             class="w-full h-full object-contain brightness-0 invert">
@@ -32,7 +28,6 @@
                         <img src="{{ asset('assets/logo2.PNG') }}" alt="Logo"
                             class="w-full h-full object-contain brightness-0 invert opacity-40">
                     </div>
-                    <!-- Additional small logos -->
                     <div class="absolute top-20 right-1/4 w-32 h-32 animate-pulse-slow">
                         <img src="{{ asset('assets/logo2.PNG') }}" alt="Logo"
                             class="w-full h-full object-contain brightness-0 invert opacity-20">
@@ -41,7 +36,6 @@
                         <img src="{{ asset('assets/logo2.PNG') }}" alt="Logo"
                             class="w-full h-full object-contain brightness-0 invert opacity-25">
                     </div>
-                    <!-- Tambahan logo kecil untuk memenuhi ruang -->
                     <div class="absolute top-40 left-1/3 w-24 h-24 animate-spin-slow opacity-15">
                         <img src="{{ asset('assets/logo2.PNG') }}" alt="Logo"
                             class="w-full h-full object-contain brightness-0 invert">
@@ -52,23 +46,19 @@
                     </div>
                 </div>
 
-                <!-- Header with Logo and Credit - Paling Ujung -->
+                <!-- Header -->
                 <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
                     <div class="flex items-center justify-between">
-                        <!-- Logo di Ujung Kiri -->
                         <div class="flex items-center group">
                             <img src="{{ asset('assets/logo1.PNG') }}" alt="Logo E-Ticketing"
                                 class="h-8 md:h-13 w-auto brightness-0 invert drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-500"
                                 onerror="this.style.display='none'">
                         </div>
-
-                        <!-- Credit di Ujung Kanan -->
                         <div class="flex items-center space-x-1 md:space-x-2">
                             <span class="text-white text-xs md:text-base font-medium">DEVELOP BY</span>
                             <span
-                                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-bold text-sm md:text-lg">
-                                IT DIGITAL
-                            </span>
+                                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-bold text-sm md:text-lg">IT
+                                DIGITAL</span>
                         </div>
                     </div>
                 </div>
@@ -104,13 +94,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Status Badge dipindahkan ke kanan -->
                             @php
                                 $statusColors = [
                                     'open' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
                                     'process' => 'bg-blue-500/20 text-blue-400 border-blue-500/30',
                                     'done' => 'bg-green-500/20 text-green-400 border-green-500/30',
                                     'reject' => 'bg-red-500/20 text-red-400 border-red-500/30',
+                                    'pending' => 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+                                    'escalate' => 'bg-purple-500/20 text-purple-400 border-purple-500/30',
                                 ];
                                 $statusColor =
                                     $statusColors[strtolower($laporan->status)] ??
@@ -118,8 +109,10 @@
                                 $statusIcon = [
                                     'open' => '🟡',
                                     'process' => '🔄',
-                                    'done' => '✓',
-                                    'reject' => '✗',
+                                    'done' => '✅',
+                                    'reject' => '❌',
+                                    'pending' => '⏳',
+                                    'escalate' => '⬆️',
                                 ];
                                 $icon = $statusIcon[strtolower($laporan->status)] ?? '•';
                                 $statusText = [
@@ -127,6 +120,8 @@
                                     'process' => 'PROCESS',
                                     'done' => 'DONE',
                                     'reject' => 'REJECT',
+                                    'pending' => 'PENDING',
+                                    'escalate' => 'ESCALATE',
                                 ];
                                 $statusLabel =
                                     $statusText[strtolower($laporan->status)] ?? strtoupper($laporan->status);
@@ -134,8 +129,7 @@
                             <div class="flex items-center gap-2">
                                 <div class="flex items-center gap-2">
                                     <div
-                                        class="w-2 h-2 rounded-full animate-pulse
-                                        {{ $laporan->status == 'open' ? 'bg-yellow-400' : ($laporan->status == 'process' ? 'bg-blue-400' : ($laporan->status == 'done' ? 'bg-green-400' : 'bg-red-400')) }}">
+                                        class="w-2 h-2 rounded-full animate-pulse {{ $laporan->status == 'open' ? 'bg-yellow-400' : ($laporan->status == 'process' ? 'bg-blue-400' : ($laporan->status == 'done' ? 'bg-green-400' : ($laporan->status == 'reject' ? 'bg-red-400' : ($laporan->status == 'pending' ? 'bg-orange-400' : ($laporan->status == 'escalate' ? 'bg-purple-400' : 'bg-gray-400'))))) }}">
                                     </div>
                                     <span
                                         class="{{ $statusColor }} px-4 md:px-6 py-2 md:py-2.5 rounded-full text-sm md:text-base font-semibold border shadow-lg">
@@ -148,9 +142,9 @@
 
                     <!-- Main Content Grid -->
                     <div class="grid lg:grid-cols-3 gap-4 md:gap-8">
-                        <!-- Left Column - Main Info -->
+                        <!-- Left Column -->
                         <div class="lg:col-span-2 space-y-4 md:space-y-6">
-                            <!-- Data Pelapor Card -->
+                            <!-- Data Pelapor -->
                             <div
                                 class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
                                 <h2
@@ -191,13 +185,12 @@
                                     <div class="space-y-1">
                                         <p class="text-gray-400 text-xs md:text-sm">Aplikasi Terkait</p>
                                         <p class="text-white font-medium text-sm md:text-base">
-                                            {{ $laporan->jenisAplikasi->jenis_aplikasi ?? 'N/A' }}
-                                        </p>
+                                            {{ $laporan->jenisAplikasi->jenis_aplikasi ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Kronologi Card -->
+                            <!-- Kronologi -->
                             <div
                                 class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
                                 <h2
@@ -210,34 +203,111 @@
                                     Kronologi Kejadian
                                 </h2>
                                 <div class="bg-white/5 rounded-lg md:rounded-xl p-3 md:p-4">
-                                    <p class="text-gray-300 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                                        {{ $laporan->kronologi }}
+                                    <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+                                        {!! nl2br(e($laporan->kronologi)) !!}
                                     </p>
                                 </div>
                             </div>
 
-                            <!-- Solusi Card (if exists) -->
-                            @if ($laporan->solusi)
-                                <div
-                                    class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
-                                    <h2
-                                        class="text-lg md:text-xl font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
-                                        <svg class="w-4 h-4 md:w-5 md:h-5 text-green-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        Solusi & Tindakan
-                                    </h2>
+                            <!-- Riwayat Alasan & Tindakan (TIMELINE YANG BERTAMBAH) -->
+                            <div
+                                class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
+                                <h2
+                                    class="text-lg md:text-xl font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-red-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                                        </path>
+                                    </svg>
+                                    Riwayat Alasan & Tindakan
+                                    @if (count($alasanTimeline) > 0)
+                                        <span class="text-xs text-gray-500">({{ count($alasanTimeline) }} catatan)</span>
+                                    @endif
+                                </h2>
+
+                                <div class="relative">
                                     <div
-                                        class="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-lg md:rounded-xl p-3 md:p-4 border border-green-500/20">
-                                        <p class="text-gray-300 text-sm md:text-base leading-relaxed">
-                                            {{ $laporan->solusi }}</p>
+                                        class="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange-500 via-purple-500 to-green-500 rounded-full">
+                                    </div>
+
+                                    <div class="space-y-5">
+                                        @forelse($alasanTimeline as $alasan)
+                                            <div class="relative pl-12 group">
+                                                <div class="absolute left-0 top-0">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full
+                                                        @switch($alasan['color'] ?? 'gray')
+                                                            @case('orange') bg-orange-500/20 ring-orange-500/30 @break
+                                                            @case('purple') bg-purple-500/20 ring-purple-500/30 @break
+                                                            @case('green') bg-green-500/20 ring-green-500/30 @break
+                                                            @default bg-gray-500/20 ring-gray-500/30
+                                                        @endswitch
+                                                        ring-4 flex items-center justify-center">
+                                                        <span class="text-sm">{{ $alasan['icon'] ?? '📌' }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    class="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-300">
+                                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                                        <div class="flex items-center gap-2">
+                                                            <span class="text-white font-medium text-sm">
+                                                                @if ($alasan['status'] == 'pending')
+                                                                    ⏳ STATUS DITUNDA
+                                                                @elseif($alasan['status'] == 'escalate')
+                                                                    ⬆️ STATUS ESCALASI
+                                                                @elseif($alasan['status'] == 'done')
+                                                                    ✅ SOLUSI
+                                                                @endif
+                                                            </span>
+                                                        </div>
+                                                        <span class="text-gray-400 text-xs">
+                                                            {{ \Carbon\Carbon::parse($alasan['timestamp'])->format('d M Y H:i:s') }}
+                                                        </span>
+                                                    </div>
+
+                                                    <div
+                                                        class="mt-2 p-2 rounded-lg
+                                                        @if ($alasan['status'] == 'pending') bg-orange-500/10 border-l-4 border-orange-500
+                                                        @elseif($alasan['status'] == 'escalate') bg-purple-500/10 border-l-4 border-purple-500
+                                                        @elseif($alasan['status'] == 'done') bg-green-500/10 border-l-4 border-green-500 @endif">
+                                                        <p class="text-gray-300 text-xs md:text-sm">
+                                                            {{ $alasan['description'] }}
+                                                        </p>
+                                                    </div>
+
+                                                    @if ($alasan['status'] != 'done')
+                                                        <div class="mt-2 flex items-center gap-1 text-gray-500 text-xs">
+                                                            <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                                                </path>
+                                                            </svg>
+                                                            <span>Diubah oleh:
+                                                                {{ $alasan['updated_by'] ?? 'System' }}</span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="text-center text-gray-500 py-8">
+                                                <svg class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                    </path>
+                                                </svg>
+                                                <p class="text-sm">Belum ada alasan atau tindakan yang tercatat</p>
+                                            </div>
+                                        @endforelse
                                     </div>
                                 </div>
-                            @endif
+                            </div>
 
-                            <!-- Lampiran Card -->
+                            <!-- Lampiran -->
                             @if (!empty($lampiran))
                                 <div
                                     class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
@@ -293,9 +363,9 @@
                             @endif
                         </div>
 
-                        <!-- Right Column - Status & Timeline -->
+                        <!-- Right Column -->
                         <div class="space-y-4 md:space-y-6">
-                            <!-- Status Card - DIPERBAIKI TATA LETAK DAN WARNA -->
+                            <!-- Status Card -->
                             <div
                                 class="bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6">
                                 <h2
@@ -309,29 +379,23 @@
                                 </h2>
 
                                 <div class="space-y-4 md:space-y-6">
-                                    <!-- Current Status - Enhanced -->
                                     <div class="bg-white/5 rounded-xl p-4">
                                         <div class="flex flex-col items-center text-center">
                                             <div class="relative mb-3">
                                                 <div
-                                                    class="absolute inset-0 rounded-full blur-xl
-                                                    {{ $laporan->status == 'open' ? 'bg-yellow-500/30' : ($laporan->status == 'process' ? 'bg-blue-500/30' : ($laporan->status == 'done' ? 'bg-green-500/30' : 'bg-red-500/30')) }}">
+                                                    class="absolute inset-0 rounded-full blur-xl {{ $laporan->status == 'open' ? 'bg-yellow-500/30' : ($laporan->status == 'process' ? 'bg-blue-500/30' : ($laporan->status == 'done' ? 'bg-green-500/30' : ($laporan->status == 'reject' ? 'bg-red-500/30' : ($laporan->status == 'pending' ? 'bg-orange-500/30' : ($laporan->status == 'escalate' ? 'bg-purple-500/30' : 'bg-gray-500/30'))))) }}">
                                                 </div>
                                                 <div
-                                                    class="relative w-16 h-16 rounded-full bg-gradient-to-br
-                                                    {{ $laporan->status == 'open' ? 'from-yellow-500 to-yellow-600' : ($laporan->status == 'process' ? 'from-blue-500 to-blue-600' : ($laporan->status == 'done' ? 'from-green-500 to-green-600' : 'from-red-500 to-red-600')) }}
-                                                    shadow-lg flex items-center justify-center">
+                                                    class="relative w-16 h-16 rounded-full bg-gradient-to-br {{ $laporan->status == 'open' ? 'from-yellow-500 to-yellow-600' : ($laporan->status == 'process' ? 'from-blue-500 to-blue-600' : ($laporan->status == 'done' ? 'from-green-500 to-green-600' : ($laporan->status == 'reject' ? 'from-red-500 to-red-600' : ($laporan->status == 'pending' ? 'from-orange-500 to-orange-600' : ($laporan->status == 'escalate' ? 'from-purple-500 to-purple-600' : 'from-gray-500 to-gray-600'))))) }} shadow-lg flex items-center justify-center">
                                                     <span class="text-3xl">{{ $icon }}</span>
                                                 </div>
                                             </div>
                                             <span
-                                                class="{{ $statusColor }} px-4 py-1.5 rounded-full text-sm font-semibold border">
-                                                {{ $statusLabel }}
-                                            </span>
+                                                class="{{ $statusColor }} px-4 py-1.5 rounded-full text-sm font-semibold border">{{ $statusLabel }}</span>
                                         </div>
                                     </div>
 
-                                    <!-- Timeline - Enhanced -->
+                                    <!-- Timeline Status (Tanpa Diubah oleh) -->
                                     <div class="mt-4">
                                         <h3 class="text-sm font-medium text-gray-400 mb-4 flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -340,71 +404,88 @@
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
                                             Timeline Laporan
+                                            @if (count($timeline) > 0)
+                                                <span class="text-xs text-gray-500">({{ count($timeline) }}
+                                                    perubahan)</span>
+                                            @endif
                                         </h3>
+
                                         <div class="relative">
-                                            <!-- Timeline line -->
+                                            <!-- Garis vertikal timeline -->
                                             <div
-                                                class="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full">
+                                                class="absolute left-[19px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500 rounded-full">
                                             </div>
 
-                                            <div class="space-y-5">
-                                                <!-- Step 1: Created -->
-                                                <div class="relative pl-12">
-                                                    <div
-                                                        class="absolute left-2 w-4 h-4 rounded-full bg-yellow-500 ring-4 ring-yellow-500/20">
-                                                    </div>
-                                                    <div class="bg-white/5 rounded-lg p-3">
-                                                        <p class="text-white font-medium text-sm">Laporan Dibuat</p>
-                                                        <p class="text-gray-400 text-xs">
-                                                            {{ \Carbon\Carbon::parse($laporan->tanggal_laporan)->format('d M Y H:i') }}
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            <div class="space-y-4">
+                                                @forelse($timeline as $index => $event)
+                                                    <div class="relative flex gap-3">
+                                                        <!-- Timeline dot -->
+                                                        <div class="flex-shrink-0">
+                                                            <div
+                                                                class="w-8 h-8 rounded-full
+                            @switch($event['color'] ?? 'gray')
+                                @case('yellow') bg-yellow-500/20 ring-yellow-500/30 @break
+                                @case('blue') bg-blue-500/20 ring-blue-500/30 @break
+                                @case('green') bg-green-500/20 ring-green-500/30 @break
+                                @case('red') bg-red-500/20 ring-red-500/30 @break
+                                @case('orange') bg-orange-500/20 ring-orange-500/30 @break
+                                @case('purple') bg-purple-500/20 ring-purple-500/30 @break
+                                @default bg-gray-500/20 ring-gray-500/30
+                            @endswitch
+                            ring-4 flex items-center justify-center">
+                                                                <span class="text-sm">{{ $event['icon'] ?? '📌' }}</span>
+                                                            </div>
+                                                        </div>
 
-                                                <!-- Step 2: Process -->
-                                                @if ($laporan->status === 'process' || $laporan->status === 'done')
-                                                    <div class="relative pl-12">
+                                                        <!-- Content -->
                                                         <div
-                                                            class="absolute left-2 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20">
-                                                        </div>
-                                                        <div class="bg-white/5 rounded-lg p-3">
-                                                            <p class="text-white font-medium text-sm">Sedang Diproses</p>
-                                                            <p class="text-gray-400 text-xs">
-                                                                {{ $laporan->updated_at->format('d M Y H:i') }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @endif
+                                                            class="flex-1 bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-300">
+                                                            <!-- Status -->
+                                                            <div class="flex items-center gap-2 flex-wrap">
+                                                                @if (!empty($event['old_status_label']) && !empty($event['new_status_label']))
+                                                                    <span class="text-white font-medium text-sm">
+                                                                        {{ $event['old_status_label'] }}
+                                                                        <svg class="inline w-3 h-3 mx-1" fill="none"
+                                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                                                        </svg>
+                                                                        {{ $event['new_status_label'] }}
+                                                                    </span>
+                                                                @else
+                                                                    <span
+                                                                        class="text-white font-medium text-sm">{{ $event['new_status_label'] ?? ucfirst($event['new_status'] ?? '') }}</span>
+                                                                @endif
+                                                                @if (!empty($event['is_initial']))
+                                                                    <span
+                                                                        class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">Awal</span>
+                                                                @endif
+                                                            </div>
 
-                                                <!-- Step 3: Done -->
-                                                @if ($laporan->status === 'done' && $laporan->tanggal_selesai)
-                                                    <div class="relative pl-12">
-                                                        <div
-                                                            class="absolute left-2 w-4 h-4 rounded-full bg-green-500 ring-4 ring-green-500/20">
-                                                        </div>
-                                                        <div class="bg-white/5 rounded-lg p-3">
-                                                            <p class="text-white font-medium text-sm">Laporan Selesai</p>
-                                                            <p class="text-gray-400 text-xs">
-                                                                {{ \Carbon\Carbon::parse($laporan->tanggal_selesai)->format('d M Y H:i') }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                <!-- Step: Rejected -->
-                                                @if ($laporan->status === 'reject')
-                                                    <div class="relative pl-12">
-                                                        <div
-                                                            class="absolute left-2 w-4 h-4 rounded-full bg-red-500 ring-4 ring-red-500/20">
-                                                        </div>
-                                                        <div class="bg-white/5 rounded-lg p-3">
-                                                            <p class="text-white font-medium text-sm">Laporan Ditolak</p>
-                                                            <p class="text-gray-400 text-xs">
-                                                                {{ $laporan->updated_at->format('d M Y H:i') }}
-                                                            </p>
+                                                            <!-- Tanggal di bawah -->
+                                                            <div class="mt-2">
+                                                                <span class="text-gray-500 text-xs">
+                                                                    @if (!empty($event['timestamp']))
+                                                                        {{ \Carbon\Carbon::parse($event['timestamp'])->format('d M Y H:i:s') }}
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                @endif
+                                                @empty
+                                                    <div class="text-center text-gray-400 py-8">
+                                                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        <p>Belum ada perubahan status</p>
+                                                    </div>
+                                                @endforelse
                                             </div>
                                         </div>
                                     </div>
@@ -423,7 +504,6 @@
                                     </svg>
                                     Informasi Tambahan
                                 </h2>
-
                                 <div class="space-y-2 md:space-y-3">
                                     <div class="flex justify-between py-1 md:py-2 border-b border-white/10">
                                         <span class="text-gray-400 text-xs md:text-sm">Nomor Tiket</span>
@@ -442,7 +522,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Back to List Button -->
                                 <div class="pt-3 md:pt-4 mt-2 border-t border-white/10">
                                     <a href="{{ route('detail_laporan.index') }}"
                                         class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-2 md:py-3 px-3 md:px-4 rounded-xl transition-all transform hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group text-sm md:text-base">
@@ -464,7 +543,6 @@
 
     @push('styles')
         <style>
-            /* Animasi floating */
             @keyframes float {
 
                 0%,
@@ -549,7 +627,6 @@
                 }
             }
 
-            /* Kelas animasi */
             .animate-float {
                 animation: float 6s ease-in-out infinite;
             }
@@ -578,7 +655,6 @@
                 animation: pulse-slow 3s ease-in-out infinite;
             }
 
-            /* Scrollbar Styling */
             .scrollbar-thin::-webkit-scrollbar {
                 width: 8px;
             }
@@ -597,7 +673,6 @@
                 background: rgba(255, 255, 255, 0.5);
             }
 
-            /* CSS untuk scrolling */
             html,
             body {
                 height: 100%;
@@ -621,53 +696,29 @@
                 pointer-events: none;
             }
 
-            /* Styling tambahan */
-            .line-clamp-2 {
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            /* ============================================ */
-            /* RESPONSIVE UNTUK MOBILE SAJA (max-width: 768px) */
-            /* ============================================ */
             @media (max-width: 768px) {
-
-                /* Kurangi padding container */
                 .px-4.sm\:px-6.lg\:px-8 {
                     padding-left: 1rem !important;
                     padding-right: 1rem !important;
                 }
 
-                /* Header card padding lebih kecil */
                 .rounded-2xl.p-4 {
                     padding: 1rem !important;
                 }
 
-                /* Icon header lebih kecil */
                 .w-12.h-12 {
                     width: 2.5rem !important;
                     height: 2.5rem !important;
                 }
 
-                /* Status badge lebih kecil */
-                .px-2.py-0\.5 {
-                    padding: 0.125rem 0.5rem !important;
-                    font-size: 0.7rem !important;
-                }
-
-                /* Grid lampiran 2 kolom di mobile */
                 .grid-cols-2.sm\:grid-cols-3 {
                     grid-template-columns: repeat(2, 1fr) !important;
                 }
 
-                /* Scrollbar lebih tipis di mobile */
                 .scrollbar-thin::-webkit-scrollbar {
                     width: 4px;
                 }
 
-                /* Timeline card di mobile */
                 .pl-12 {
                     padding-left: 2rem !important;
                 }
